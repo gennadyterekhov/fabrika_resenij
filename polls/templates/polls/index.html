@@ -1,0 +1,29 @@
+
+<h1>List of polls</h1>
+<!-- user info: <pre>{{ user }}</pre> -->
+
+<h3>New polls</h3>
+<ol>
+{% for poll in not_passed %}
+        <li>
+            <a href="{% url 'polls:detail' poll.id %}">
+                {{ poll }}
+            </a>
+        </li>
+{% endfor %}
+</ol>
+
+<hr>
+<h3>Polls that you already participated in</h3>
+<ol>
+    {% for pollanswer in passed %}
+        <li>
+            <a href="{% url 'polls:results' pk=pollanswer.id %}">
+                {{ pollanswer.poll.name }}
+            </a>
+        </li>
+
+    {% endfor %}
+</ol>
+
+

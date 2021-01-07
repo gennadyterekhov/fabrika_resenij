@@ -1,0 +1,5 @@
+_meta
+db.sqlite3
+fabrika_resenij/settings.py
+fabrika_resenij/__pycache__
+polls/__pycache__

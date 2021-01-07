@@ -1,0 +1,46 @@
+Poll: <h1>{{ poll.name }}</h1>
+id {{ poll.id }}
+<br>
+description:
+<pre>
+    {{ poll.description }}
+</pre>
+<br>
+<hr>
+{{ error_message }}
+<br>
+<form action="{% url 'polls:post_answer' poll.id %}" method="POST">
+    {% csrf_token %}
+    Questions in this poll:
+    <div>
+        <ol>
+            {% for question in poll.question_set.all %}
+                <li>
+                    <h3>{{ question.question_text }}</h3>
+
+                    {% if question.field_code == 1 %}
+                        <input type="text" placeholder="Answer here" name="{{ question.id }}">
+
+                    {% elif question.field_code == 2 %}
+                        <!-- Choose only one answer -->
+                        {% for choice in question.choice_set.all %}
+                            <input type="radio" id="question_{{question.id}}_choice_{{ choice.id }}" name="{{ question.id }}" value="{{ choice }}">
+                            <label for="question_{{question.id}}_choice_{{ choice.id }}">{{ choice }}</label>
+                            <br>
+                        {% endfor %}
+
+                    {% else %}
+                        <!-- You can choose multiple answers -->
+                        {% for choice in question.choice_set.all %}
+                            <input type="checkbox" id="question_{{question.id}}_choice_{{ choice.id }}" name="{{ question.id }}_{{ choice.id }}" value="{{ choice }}">
+                            <label for="question_{{question.id}}_choice_{{ choice.id }}">{{ choice }}</label>
+                            <br>
+                        {% endfor %}
+                    {% endif %}
+                    <br>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+    <input type="submit" value="Submit">
+</form>

@@ -1,0 +1,26 @@
+<h1>Your answers to</h1>
+Poll: <h1>{{ pollanswer.poll }}</h1>
+<br>
+description:
+<pre>
+    {{ pollanswer.poll.description }}
+</pre>
+<br>
+<hr>
+
+
+Questions in this poll:
+<div>
+    <ol>
+        {% for questionanswer in pollanswer.questionanswer_set.all %}
+            <li>
+                <h3>{{ questionanswer.question.question_text }}</h3>
+
+                {{ questionanswer.answer_text }}
+
+                <br>
+            </li>
+        {% endfor %}
+    </ol>
+</div>
+
