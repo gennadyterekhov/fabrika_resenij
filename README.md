@@ -30,7 +30,44 @@ https://fabrique.studio/
     - инструкция по разворачиванию приложения (в docker или локально)
     - документация по API
 
-## инструкция по разворачиванию приложения
-##
-##
-##
+## инструкция по разворачиванию приложения с помощью nginx и gunicorn
+
+
+в вашу конфигурацию nginx добавьте
+
+    server {
+        listen 80;
+        server_name localhost;
+        access_log  /var/log/nginx/example.log;
+
+        location / {
+            proxy_pass http://127.0.0.1:8000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+    }
+
+
+перезапустите nginx
+
+`sudo nginx -s reload`
+
+в корне проекта запустите gunicorn
+
+`gunicorn -w 1 fabrika_resenij.wsgi:application`
+
+теперь, зайдя по адресу http://localhost/polls/ вы увидите приложение
+
+
+<!-- теперь подключим docker
+
+вот содержимое Dockerfile
+    contents
+
+собрать образ:
+
+`docker build -t fabrika-resenij-image -f docker/Dockerfile .`
+
+запустить контейнер:
+
+`docker run --name fabrika-resenij-container -v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro --rm nginx` -->
