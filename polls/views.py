@@ -87,27 +87,6 @@ class ResultsView(generic.DetailView):
     template_name = 'polls/results.html'
 
 
-# def results(request, pk, user_id):
-#     model = Poll
-#     template_name = 'polls/results.html'
-#     poll = get_object_or_404(model, pk=pk)
-#     questions = poll.question_set.all()
-#     answers = {}
-
-#     for question in questions:
-#         answers[question.id] = Answer.objects.filter(question_id=question.id)
-#         answer_texts = [answer_obj.answer for answer_obj in answers[question.id]]
-#         answer_text = json.dumps(answer_texts)
-#         question.answer = answer_text
-#     # answers = Answer.objects.filter(user__id=user_id, question__poll_id=pk)
-#     context = {
-#         'poll': poll,
-#         'questions': questions,
-#         # 'answers': answers
-#     }
-#     return render(request, template_name, context)
-
-
 def post_answer(request, pk):
     """
     Here I need to get user's answers and save them to the DB as QuestionAnswer and PollAnswer.
@@ -151,36 +130,13 @@ def post_answer(request, pk):
         return HttpResponseRedirect(reverse('polls:results', args=(poll_answer.id,)))
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class AnonymousUserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = AnonymousUser.objects.all()
-    serializer_class = AnonymousUserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
 class PollViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows polls to be created, viewed, edited, deleted.\n
+    POST to create\n
+    GET to view\n
+    PUT to edit (note, that you cannot edit start_date after the poll is created)\n
+    DELETE to delete
     """
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
@@ -196,7 +152,11 @@ class PollViewSet(viewsets.ModelViewSet):
 
 class QuestionViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows questions to be created, viewed, edited, deleted.\n
+    POST to create\n
+    GET to view\n
+    PUT to edit\n
+    DELETE to delete
     """
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
@@ -205,7 +165,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
 class ChoiceViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows choices to be created, viewed, edited, deleted.\n
+    POST to create\n
+    GET to view\n
+    PUT to edit\n
+    DELETE to delete
     """
     queryset = Choice.objects.all()
     serializer_class = ChoiceSerializer
