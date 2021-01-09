@@ -33,6 +33,10 @@ https://fabrique.studio/
 
 ## инструкция по разворачиванию приложения с помощью nginx и gunicorn
 
+установите зависимости
+
+`python -m pip install -r requirements.txt`
+
 
 в вашу конфигурацию nginx добавьте
 
