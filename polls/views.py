@@ -116,7 +116,7 @@ def post_answer(request, pk):
             question_answer.save()
         
     except (KeyError, Poll.DoesNotExist) as exception:
-        # Redisplay the poll voting form.
+        # Redisplay the poll form.
         return render(request, 'polls/detail.html', {
             'poll': poll,
             'error_message': "You didn't select a choice.",
@@ -156,7 +156,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
     POST to create\n
     GET to view\n
     PUT to edit\n
-    DELETE to delete
+    DELETE to delete\n
+    field_code value:\n
+    \t1 - text question\n
+    \t2 - single choice question\n
+    \t3 - multiple choice question\n
     """
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
