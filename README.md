@@ -33,12 +33,20 @@ https://fabrique.studio/
 
 ## инструкция по разворачиванию приложения с помощью nginx и gunicorn
 
+
 установите зависимости
 
 `python -m pip install -r requirements.txt`
 
+сгенерируйте секретный ключ django
 
-в вашу конфигурацию nginx добавьте
+`python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'`
+
+добавьте в переменные среды DJANGO_SECRET_KEY равную вашему секретному коду django
+
+`export DJANGO_SECRET_KEY='<django_secret_key>'`
+
+в вашу конфигурацию nginx (обычно /etc/nginx/nginx.conf) добавьте в конец блока html
 
     server {
         listen 80;
@@ -52,6 +60,12 @@ https://fabrique.studio/
         }
     }
 
+и закомментируйте эту строку, если она есть
+
+    include /etc/nginx/conf.d/*.conf;
+
+
+
 
 перезапустите nginx
 
@@ -63,6 +77,9 @@ https://fabrique.studio/
 
 теперь, зайдя по адресу http://localhost/polls/ вы увидите приложение
 
+## документация по API
+
+после разворачивания приложения будет доступна по адресу localhost/api/
 
 <!-- теперь подключим docker
 
@@ -75,4 +92,4 @@ https://fabrique.studio/
 
 запустить контейнер:
 
-`docker run --name fabrika-resenij-container -v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro --rm nginx` -->
+`docker run --name fabrika-resenij-container -v /etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro --rm fabrika-resenij-image` -->
